@@ -33,7 +33,12 @@ class Hebb:
         data = self.training_data[self.current_data]
         target = self.target_data[self.current_data]
         bias = 1
-        if (np.dot(data, self.weights) + self.bias * bias) == target:
+        activation = np.dot(data, self.weights) + self.bias * bias
+        if activation >= self.threshold:
+            activation = 1
+        else:
+            activation = -1
+        if (activation == target):
             self.num_weight_not_change += 1
             return
         deltaData = data * target
