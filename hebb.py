@@ -40,6 +40,9 @@ class Hebb:
             activation = -1
         if (activation == target):
             self.num_weight_not_change += 1
+            self.current_data = (self.current_data + 1) % len(self.training_data)
+            if (self.current_data == 0):
+                self.epochs += 1
             return
         deltaData = data * target
         deltaBias = bias * target

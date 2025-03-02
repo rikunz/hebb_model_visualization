@@ -4,6 +4,10 @@ from hebb import Hebb
 
 # *********************** Util Function
 def add_data(training_data_input, target_input):
+    if target_input == "X":
+        target_input = 1
+    else:
+        target_input = -1
     st.session_state.target_data.append(target_input)
     st.session_state.training_data.append(training_data_input.flatten())
 
@@ -28,6 +32,7 @@ def reset_checkboxes_predict():
             key = f"cb_{i}_{j}"
             if key in st.session_state:
                 st.session_state[key] = False
+    st.session_state.predict_result = None
 
 def train_step(): 
     message = st.session_state.hebb_model.train_step()
@@ -47,7 +52,7 @@ def set_up_training_data():
 
 def predict():
     prediction = st.session_state.hebb_model.predict(grid.flatten())
-    st.session_state.predict_result = prediction
+    st.session_state.predict_result = "X" if prediction == 1 else "O"
 
 
 # *********************** Streamlit Section
@@ -92,7 +97,7 @@ with col[0]:
                 training_data_input[i, j] = -1
 
 with col[1]:
-    target_input = st.selectbox("Select Target", [-1, 1], placeholder="Select Target", key="target")
+    target_input = st.selectbox("Select Target", ["X", "O"], placeholder="Select Target", key="target")
     
 cols = st.columns([1, 1,3], gap="small")
 with cols[0]:
